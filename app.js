@@ -13,6 +13,7 @@ const localStorageTransactions = JSON.parse(
 
 let transactions;
 
+//for loading previous transactions on reloading
 function loadLocal() {
     let amounts=0,income=0,expense=0;
     if(localStorage.getItem('transactions') !== null){
@@ -68,24 +69,6 @@ function generateID() {
     return Math.floor(Math.random() * 100000);
 }
 
-
-function updatevalues(transaction) {
-    let amounts, income, expense;
-    amounts = parseInt(balance.innerText) + transaction.amount;
-    if (transaction.amount < 0) {
-        expense = parseInt(money_minus.innerText) + Math.abs(transaction.amount);
-        income = parseInt(money_plus.innerText);
-    }
-    else {
-        income = parseInt(money_plus.innerText) + Math.abs(transaction.amount);
-        expense = parseInt(money_minus.innerText);
-    }
-
-    balance.innerText = `${amounts}`;
-    money_plus.innerText = `${income}`;
-    money_minus.innerText = `${expense}`;
-}
-
 function addTransaction(transaction) {
     //get sign
     const sign = transaction.amount < 0 ? '-' : '+';
@@ -108,6 +91,26 @@ function addTransaction(transaction) {
 
 }
 
+
+//fot updating values
+function updatevalues(transaction) {
+    let amounts, income, expense;
+    amounts = parseInt(balance.innerText) + transaction.amount;
+    if (transaction.amount < 0) {
+        expense = parseInt(money_minus.innerText) + Math.abs(transaction.amount);
+        income = parseInt(money_plus.innerText);
+    }
+    else {
+        income = parseInt(money_plus.innerText) + Math.abs(transaction.amount);
+        expense = parseInt(money_minus.innerText);
+    }
+
+    balance.innerText = `${amounts}`;
+    money_plus.innerText = `${income}`;
+    money_minus.innerText = `${expense}`;
+}
+
+//for removing transactions
 function removetransaction(id) {
     transactions = transactions.filter(transaction => transaction.id !== id);
 
@@ -132,4 +135,5 @@ function updateLocalStorage() {
     localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
+//event listener for submiting the form
 form.addEventListener('submit', addtrans);
